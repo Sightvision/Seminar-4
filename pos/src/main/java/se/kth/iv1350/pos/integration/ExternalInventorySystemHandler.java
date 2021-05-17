@@ -31,11 +31,16 @@ public class ExternalInventorySystemHandler {
 
 	/**
 	 * Searches for an item in the inventory system using an identifier.
+         * If item identifier is 100 a DataBaseOfflineException is thrown.
+         * If no item identifier is found a ItemIdentifierNotValidException is thrown.
 	 * @param itemIdentifier the item's identifier.
 	 * @return Returns item if found, otherwise returns null.
 	 */
-	public Item search(int itemIdentifier) throws ItemIdentifierNotValidException {
-		for (Item item : storeItems) {
+	public Item search(int itemIdentifier) throws ItemIdentifierNotValidException, DataBaseOfflineException {
+		if(itemIdentifier == 100){
+                    throw new DataBaseOfflineException("The DB can not be reached!");
+                }
+                for (Item item : storeItems) {
 			if (item.getItemIdentifier() == itemIdentifier) {
 					return item;
 			}

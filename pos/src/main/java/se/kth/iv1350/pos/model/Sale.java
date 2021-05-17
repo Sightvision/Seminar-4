@@ -64,7 +64,7 @@ public class Sale {
 	 * @param currentItem the duplicate item.
 	 * @param quantity the quantity of this item.
 	 */
-    public void isDuplicateItem(Item item, int quantity) {
+    private void isDuplicateItem(Item item, int quantity) {
         boolean found = false;
     	for(Item currentItem : items) {
     		if(currentItem.getItemIdentifier() == item.getItemIdentifier()) {   

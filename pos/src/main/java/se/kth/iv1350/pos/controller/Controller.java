@@ -37,20 +37,21 @@ public class Controller {
     
     /**
      * Adds an item to the sale.
+     * There is two exceptions in this method. 
+     * One is for if an invalid item identifier are entered and the other one is if the server is offline.
      * @param itemIdentifier The identifier of the item. Not handled if invalid.
      * @param quantity The quantity of the entered item.
      * @return SaleDTO, which is to be shown on the screen in view.
      */
-    public SaleDTO enterItem(int itemIdentifier, int quantity) throws ItemIdentifierNotValidException {
-    
+    public SaleDTO enterItem(int itemIdentifier, int quantity) throws ItemIdentifierNotValidException, DataBaseOfflineException {
         try{
             Item item = eis.search(itemIdentifier); 
             if(item.getStoreQuantity() >= quantity) {
                 sale.addItem(item, quantity);	
             }
             return this.sale.getSaleInformation();
-        } catch(ItemIdentifierNotValidException exception){
-            System.out.println(exception.getMessage());
+        } catch(ItemIdentifierNotValidException | DataBaseOfflineException exception){
+            System.err.println("DEVELOPER (log): " + exception.getMessage());
             throw exception;
         }
     }
