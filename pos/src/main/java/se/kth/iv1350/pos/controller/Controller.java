@@ -41,19 +41,18 @@ public class Controller {
      * @param quantity The quantity of the entered item.
      * @return SaleDTO, which is to be shown on the screen in view.
      */
-    public SaleDTO enterItem(int itemIdentifier, int quantity) {
-    	Item item = eis.search(itemIdentifier);
-    	
-    	if(item == null){
-            return null;
+    public SaleDTO enterItem(int itemIdentifier, int quantity) throws ItemIdentifierNotValidException {
+    
+        try{
+            Item item = eis.search(itemIdentifier); 
+            if(item.getStoreQuantity() >= quantity) {
+                sale.addItem(item, quantity);	
+            }
+            return this.sale.getSaleInformation();
+        } catch(ItemIdentifierNotValidException exception){
+            System.out.println(exception.getMessage());
+            throw exception;
         }
-    	if(item.getStoreQuantity() >= quantity) {
-    		sale.addItem(item, quantity);
-    	}else {
-    		return null;
-    	}
-        
-    	return this.sale.getSaleInformation();
     }
     
     /**

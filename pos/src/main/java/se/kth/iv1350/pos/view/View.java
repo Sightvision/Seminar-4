@@ -1,6 +1,7 @@
 package se.kth.iv1350.pos.view;
 
 import se.kth.iv1350.pos.controller.Controller;
+import se.kth.iv1350.pos.integration.ItemIdentifierNotValidException;
 import se.kth.iv1350.pos.model.*;
 /**
  * The View of the program which runs a runFakeExecution task.
@@ -23,13 +24,17 @@ public class View {
     public void runFakeExecution() {
     	contr.startSale();
     	System.out.println("Försäljning startad.");
-
-    	SaleDTO saleDTO = contr.enterItem(10, 10);
-        System.out.println("Föremål:      " + saleDTO.getItems().get(0).getItemDTO().getItemDescription() + "    " +  saleDTO.getItems().get(0).getItemDTO().getPrice() + " SEK");
-        System.out.println("Running total:                                          " + saleDTO.getTotalPrice() + " SEK");
-    	saleDTO = contr.enterItem(2, 1);
-        System.out.println("Föremål:      " + saleDTO.getItems().get(1).getItemDTO().getItemDescription() + "                   " +  saleDTO.getItems().get(1).getItemDTO().getPrice() + " SEK");
-        System.out.println("Running total:                                          " + saleDTO.getTotalPrice() + " SEK");
+           
+        try{
+            SaleDTO saleDTO = contr.enterItem(10, 10);
+            System.out.println("Föremål:      " + saleDTO.getItems().get(0).getItemDTO().getItemDescription() + "    " +  saleDTO.getItems().get(0).getItemDTO().getPrice() + " SEK");
+        } catch(ItemIdentifierNotValidException exception){
+            System.err.println("Invalid item identifier!");
+        }
+        
+    	//SaleDTO saleDTO = contr.enterItem(10, 10);
+        //System.out.println("Föremål:      " + saleDTO.getItems().get(0).getItemDTO().getItemDescription() + "    " +  saleDTO.getItems().get(0).getItemDTO().getPrice() + " SEK");
+        //System.out.println("Running total:                                          " + saleDTO.getTotalPrice() + " SEK");
 
     	
     	contr.endSale();
