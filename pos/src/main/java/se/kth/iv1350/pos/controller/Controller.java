@@ -43,6 +43,7 @@ public class Controller {
      */
     public SaleDTO enterItem(int itemIdentifier, int quantity) {
     	Item item = eis.search(itemIdentifier);
+    	
     	if(item == null){
             return null;
         }

@@ -24,7 +24,7 @@ public class View {
     	contr.startSale();
     	System.out.println("Försäljning startad.");
 
-    	SaleDTO saleDTO = contr.enterItem(1, 10);
+    	SaleDTO saleDTO = contr.enterItem(10, 10);
         System.out.println("Föremål:      " + saleDTO.getItems().get(0).getItemDTO().getItemDescription() + "    " +  saleDTO.getItems().get(0).getItemDTO().getPrice() + " SEK");
         System.out.println("Running total:                                          " + saleDTO.getTotalPrice() + " SEK");
     	saleDTO = contr.enterItem(2, 1);

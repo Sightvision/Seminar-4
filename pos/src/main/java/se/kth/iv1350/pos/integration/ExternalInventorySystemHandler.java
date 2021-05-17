@@ -34,12 +34,13 @@ public class ExternalInventorySystemHandler {
 	 * @param itemIdentifier the item's identifier.
 	 * @return Returns item if found, otherwise returns null.
 	 */
-	public Item search(int itemIdentifier) {
+	public Item search(int itemIdentifier) throws Exception {
 		for (Item item : storeItems) {
 			if (item.getItemIdentifier() == itemIdentifier) {
 					return item;
 			}
 		}
+		throw new ItemIdentifierNotValidException("Identifier: " + itemIdentifier + ", Is not valid!");
 		return null;
 	}
 
