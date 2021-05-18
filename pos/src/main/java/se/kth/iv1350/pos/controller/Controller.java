@@ -1,5 +1,6 @@
 package se.kth.iv1350.pos.controller;
 
+import java.util.*;
 import se.kth.iv1350.pos.model.*;
 import se.kth.iv1350.pos.integration.*;
 
@@ -12,6 +13,8 @@ public class Controller {
     private Printer printer; 
     private ExternalAccountingSystemHandler eas;
     private ExternalInventorySystemHandler eis;
+    
+    private List<SaleObserver> saleObservers = new ArrayList<>();
     
     /**
 	 * Generates an instance of the controller.
@@ -32,6 +35,8 @@ public class Controller {
 	 */
     public SaleDTO startSale() {
         this.sale = new Sale();
+        for(SaleObserver obs : saleObservers)
+            sale.addSaleObserver(obs);
         return sale.getSaleInformation();
     }
     
@@ -87,4 +92,13 @@ public class Controller {
     public void print() {
     	printer.print(this.sale.getReceipt(sale));
     }
+    
+    /**
+     * Observer will be notified when a new sale has been made.
+     * @param obs Is the variable for the observer to notify. 
+     */
+    public void addSaleObserver(SaleObserver obs){
+        saleObservers.add(obs);
+    }
+
 }

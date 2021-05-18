@@ -15,6 +15,7 @@ public class Printer {
      * @param receipt The recepit.
      */
     public void print(Receipt receipt) {
+        
         System.out.println("Printing receipt bip bop");
     }
 }

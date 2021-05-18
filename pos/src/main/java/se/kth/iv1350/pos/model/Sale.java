@@ -18,6 +18,8 @@ public class Sale {
     private double totalVAT;
     private double totalPrice;
 
+    private List<SaleObserver> saleObservers = new ArrayList<>();
+
     /**
 	 * Creates a new instance of sale and saves the time.
 	 */
@@ -86,6 +88,7 @@ public class Sale {
 	 * @return recepit the receipt of the sale.
 	 */
     public Receipt getReceipt(Sale sale) {
+        notifyObservers();
         this.receipt = new Receipt(sale.getSaleInformation());
     	return receipt;
     }
@@ -112,12 +115,26 @@ public class Sale {
                 this.saleInformation = new SaleDTO(this.time, this.totalVAT, this.totalPrice, this.items);
 	}
 
-	/**
-     * Adds the item to the arraylist nameOfItems.
-     * @param item the item being added to the list.
+    /**
+    * Adds the item to the arraylist nameOfItems.
+    * @param item the item being added to the list.
+    */
+    private void updateItems(Item item) {
+            items.add(item);
+            this.saleInformation = new SaleDTO(this.time, this.totalVAT, this.totalPrice, this.items);
+    }
+        
+    private void notifyObservers(){
+        for(SaleObserver obs : saleObservers){
+            obs.newSale(this.totalPrice);
+        }
+    }
+        
+    /**
+     * Observer will be notified when a new sale has been made.
+     * @param obs Is the variable for the observer to notify. 
      */
-	private void updateItems(Item item) {
-		items.add(item);
-                this.saleInformation = new SaleDTO(this.time, this.totalVAT, this.totalPrice, this.items);
-	}
+    public void addSaleObserver(SaleObserver obs){
+        saleObservers.add(obs);
+    }
 }
