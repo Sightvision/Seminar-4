@@ -1,14 +1,13 @@
 package se.kth.iv1350.pos.model;
 
 import java.util.*;
-
+import java.time.*;
 /**
  * SaleDTO, Sale data transfer object. Groups variables related to a sale.
  */
 public class SaleDTO {
 	private java.time.LocalTime time;
-	private String nameOfStore;
-	private double totalDiscount;
+	private String nameOfStore = "Gittans Livs";
 	private double totalVAT;
 	private double totalPrice;
 	private List<Item> items;
@@ -16,20 +15,16 @@ public class SaleDTO {
 	/**
 	 * Creates an instance of SaleDTO.
 	 * @param time Holds the current time of the sale
-	 * @param nameOfStore Holds Name of the store
-	 * @param totalDiscount	Holds the total Discount for the sale
 	 * @param totalVAT Holds the total VAT
 	 * @param totalPrice Holds the total Price
 	 * @param items Holds the current Sale Items
 	 */
-	public SaleDTO(java.time.LocalTime time, String nameOfStore, double totalDiscount, double totalVAT,
+	public SaleDTO(java.time.LocalTime time, double totalVAT,
 			double totalPrice, List<Item> items) {
 		this.time = time;
-		this.nameOfStore = nameOfStore;
-		this.totalDiscount = totalDiscount;
 		this.totalVAT = totalVAT;
 		this.totalPrice = totalPrice;
-		this.items = new ArrayList<>();
+		this.items = items;
 	}
 
 	/**
@@ -70,32 +65,5 @@ public class SaleDTO {
 	 */
 	public List<Item> getItems() {
 		return this.items;
-	}
-
-	/**
-     * This method updates the total price for the sale.
-     * @param amount the cost of the item.
-     * @param quantity the quantity of the item.
-     * @param totalVAT the total VAT
-     */
-	public void updateTotalPrice(double amount, int quantity, double totalVAT) {
-		this.totalPrice += (amount * quantity) + (totalVAT * (double)quantity) ;
-	}
-
-	/**
-     * Updates the total VAT for the entire sale.
-     * @param amount the price of the item.
-     * @param quantity the quantity of the item.
-     */
-	public void updateTotalVAT(double vat, int quantity) {
-		this.totalVAT += (vat* quantity);
-	}
-
-	/**
-     * Adds the item to the arraylist nameOfItems.
-     * @param item the item being added to the list.
-     */
-	public void updateItems(Item item) {
-		items.add(item);
 	}
 }

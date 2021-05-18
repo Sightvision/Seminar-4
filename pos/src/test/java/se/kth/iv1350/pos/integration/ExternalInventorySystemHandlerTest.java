@@ -37,9 +37,13 @@ public class ExternalInventorySystemHandlerTest {
         int itemIdentifier = 1;
 
         String expResult = "Karrékotlett med Ben Skivad ca 1kg ICA";
-        Item item = eis.search(itemIdentifier);
-        String result = item.getItemDTO().getItemDescription();
-        assertEquals(expResult, result, "Expected result did not equal result");
+        try{
+           Item item = eis.search(itemIdentifier);
+           String result = item.getItemDTO().getItemDescription();
+           assertEquals(expResult, result, "Expected result did not equal result");
+        }catch(Exception exception){
+            fail("An exception was thrown " + exception.getMessage() + "!");
+        }
     }
     
     @Test
@@ -47,10 +51,31 @@ public class ExternalInventorySystemHandlerTest {
         System.out.println("search not valid identifier");
         eis.addItem();
         int itemIdentifier = 5;
-
-        Item expResult = null;
-        Item result = eis.search(itemIdentifier);
-        assertEquals(expResult, result, "Expected result did not equal result");
+        String expResult = "Identifier: 5, Is not valid!";
+        try{
+           Item result = eis.search(itemIdentifier);
+           fail("Exception was not thrown!");
+        }catch(ItemIdentifierNotValidException exception){
+            assertEquals(exception.getMessage(), expResult);
+        }catch(Exception exception){
+            fail("An exception was thrown " + exception.getMessage() + "!");
+        }
+    }
+    
+    @Test
+    public void testDatabaseNotReached() {
+        System.out.println("databaseNotReached");
+        eis.addItem();
+        int itemIdentifier = 100;
+        String expResult = "The DB can not be reached!";
+        try{
+           Item result = eis.search(itemIdentifier);
+           fail("Exception was not thrown!");
+        }catch(DataBaseOfflineException exception){
+            assertEquals(exception.getMessage(), expResult);
+        }catch(Exception exception){
+            fail("An exception was thrown " + exception.getMessage() + "!");
+        }
     }
 
     @Test

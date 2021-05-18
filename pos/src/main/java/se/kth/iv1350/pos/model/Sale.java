@@ -15,6 +15,8 @@ public class Sale {
     private Receipt receipt;
     private List<Item> items;
     private List<Integer> customerItemsQuantity = new ArrayList<>();
+    private double totalVAT;
+    private double totalPrice;
 
     /**
 	 * Creates a new instance of sale and saves the time.
@@ -22,7 +24,7 @@ public class Sale {
     public Sale () {
     	this.time = LocalTime.now();
     	this.items = new ArrayList<>();
-    	this.saleInformation = new SaleDTO(time, "Gittans Livs", 0,  0, 0, null);
+    	this.saleInformation = new SaleDTO(time, 0, 0, null);
     }
 
     /**
@@ -55,8 +57,8 @@ public class Sale {
 	 * @param quantity the quantity of the item being added.
 	 */
     public void addItem(Item item, int quantity) {
-    	this.saleInformation.updateTotalVAT(item.getItemDTO().getVAT(), quantity);
-    	this.saleInformation.updateTotalPrice(item.getItemDTO().getPrice(), quantity, (item.getItemDTO().getVAT()));
+    	updateTotalVAT(item.getItemDTO().getVAT(), quantity);
+    	updateTotalPrice(item.getItemDTO().getPrice(), quantity, (item.getItemDTO().getVAT()));
         isDuplicateItem(item, quantity);
     }
     /**
@@ -73,8 +75,7 @@ public class Sale {
     		}
     	}
         if(found == false) {
-    		items.add(item);
-    		saleInformation.updateItems(item);
+    		updateItems(item);
                 customerItemsQuantity.add(quantity);
     	}
     }
@@ -88,4 +89,35 @@ public class Sale {
         this.receipt = new Receipt(sale.getSaleInformation());
     	return receipt;
     }
+    
+        
+    	/**
+     * This method updates the total price for the sale.
+     * @param amount the cost of the item.
+     * @param quantity the quantity of the item.
+     * @param totalVAT the total VAT
+     */
+	private void updateTotalPrice(double amount, int quantity, double totalVAT) {
+		this.totalPrice += (amount * quantity) + (totalVAT * (double)quantity);
+                this.saleInformation = new SaleDTO(this.time, this.totalVAT, this.totalPrice, this.items);
+	}
+
+	/**
+     * Updates the total VAT for the entire sale.
+     * @param amount the price of the item.
+     * @param quantity the quantity of the item.
+     */
+	private void updateTotalVAT(double vat, int quantity) {
+		this.totalVAT += (vat* quantity);
+                this.saleInformation = new SaleDTO(this.time, this.totalVAT, this.totalPrice, this.items);
+	}
+
+	/**
+     * Adds the item to the arraylist nameOfItems.
+     * @param item the item being added to the list.
+     */
+	private void updateItems(Item item) {
+		items.add(item);
+                this.saleInformation = new SaleDTO(this.time, this.totalVAT, this.totalPrice, this.items);
+	}
 }

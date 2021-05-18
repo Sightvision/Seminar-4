@@ -25,6 +25,21 @@ public class ControllerTest {
         System.out.println("startSale");
         SaleDTO result = contr.startSale();
     }
+    
+    @Test
+    public void testEndSale() {
+        System.out.println("endSale");
+        contr.startSale();
+        try{
+            SaleDTO saleDTO = contr.enterItem(1, 2);
+            contr.endSale();
+            int expResult = 98;
+            int result = saleDTO.getItems().get(0).getStoreQuantity();
+            assertEquals(expResult, result, "Expected result did not equal result");  
+        }catch(Exception exception){
+            fail("An exception was thrown " + exception.getMessage() + "!");
+        }   
+    }
 
     @Test
     public void testEnterItem() {
@@ -34,9 +49,13 @@ public class ControllerTest {
         int itemIdentifier = 1;
         int quantity = 2;
         String expResult = "Karrékotlett med Ben Skivad ca 1kg ICA";
-        SaleDTO saleDTO = contr.enterItem(itemIdentifier, quantity);
-        String result = saleDTO.getItems().get(0).getItemDTO().getItemDescription();
-        assertEquals(expResult, result, "Expected result did not equal result");
+        try{
+            SaleDTO saleDTO = contr.enterItem(itemIdentifier, quantity);
+            String result = saleDTO.getItems().get(0).getItemDTO().getItemDescription();
+            assertEquals(expResult, result, "Expected result did not equal result");
+        }catch(Exception exception){
+            fail("Exception was thrown! " + exception.getMessage() + "!");
+        }
     }
     
     public void testEnterNullItem() {
@@ -45,64 +64,68 @@ public class ControllerTest {
         
         int itemIdentifier = 8;
         int quantity = 2;
-        SaleDTO expResult = null;
-        SaleDTO result = contr.enterItem(itemIdentifier, quantity);
-        assertEquals(expResult, result, "Expected result did not equal result");
-    }
-
-    @Test
-    public void testEndSale() {
-        System.out.println("endSale");
-        contr.startSale();
-        SaleDTO saleDTO = contr.enterItem(1, 2);
-        int expResult = 98;
-        contr.endSale();
-        int result = saleDTO.getItems().get(0).getStoreQuantity();
-        assertEquals(expResult, result, "Expected result did not equal result");  
+        String expResult = "Identifier: 8, Is not valid!"; 
+        
+        try{
+           SaleDTO result = contr.enterItem(itemIdentifier, quantity);
+           fail("Exception was not thrown!");
+        }catch(ItemIdentifierNotValidException exception){
+            assertEquals(exception.getMessage(), expResult);
+        }catch(Exception exception){
+            fail("An exception was thrown " + exception.getMessage() + "!");
+        }
     }
     
     @Test
     public void testPay() {
         System.out.println("pay");
         contr.startSale();
-        contr.enterItem(1, 2);
-        contr.endSale();
-        
-        double amount = 300;
-        String paymentMethod = "Cash";
-        double expResult = 102;
-        double result = contr.pay(amount, paymentMethod);
-        assertEquals(expResult, result, "Expected result did not equal result");
+        try{
+            contr.enterItem(1, 2);
+            contr.endSale();
+            double amount = 300;
+            String paymentMethod = "Cash";
+            double expResult = 102;
+            double result = contr.pay(amount, paymentMethod);
+            assertEquals(expResult, result, "Expected result did not equal result");
+        }catch(Exception exception){
+            fail("An exception was thrown " + exception.getMessage() + "!");
+        }
     }
     
     @Test
     public void testPayLess() {
         System.out.println("pay less");
         contr.startSale();
-        contr.enterItem(1, 2);
-        contr.endSale();
-        
-        double amount = 100;
-        String paymentMethod = "Cash";
-        double expResult = -98;
-        double result = contr.pay(amount, paymentMethod);
-        assertEquals(expResult, result, "Expected result did not equal result");
+        try{
+            contr.enterItem(1, 2);
+            contr.endSale();
+            double amount = 100;
+            String paymentMethod = "Cash";
+            double expResult = -98;
+            double result = contr.pay(amount, paymentMethod);
+            assertEquals(expResult, result, "Expected result did not equal result");
+        }catch(Exception exception){
+            fail("An exception was thrown " + exception.getMessage() + "!");
+        }
     }
     
     @Test
     public void testPayEqual() {
         System.out.println("pay equal");
         contr.startSale();
-        contr.enterItem(1, 2);
-        contr.endSale();
-        
-        double amount = 198;
-        String paymentMethod = "Cash";
-        double expResult = 0;
-        double result = contr.pay(amount, paymentMethod);
-        assertEquals(expResult, result, "Expected result did not equal result");
+        try{
+            contr.enterItem(1, 2);
+            contr.endSale();
+            double amount = 198;
+            String paymentMethod = "Cash";
+            double expResult = 0;
+            double result = contr.pay(amount, paymentMethod);
+            assertEquals(expResult, result, "Expected result did not equal result");
+        }catch(Exception exception){
+            fail("An exception was thrown " + exception.getMessage() + "!");
+        }
     }
-    
 
     @Test
     public void testPrint() {

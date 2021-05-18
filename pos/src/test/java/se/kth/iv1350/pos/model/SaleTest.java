@@ -10,9 +10,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class SaleTest {
     private Sale sale;
+    private SaleDTO saleDTO;
     
     public SaleTest() {
         sale = new Sale();
+        saleDTO = new SaleDTO(java.time.LocalTime.now(), 0, 0, null); 
     }
 
     @Test
@@ -23,7 +25,31 @@ public class SaleTest {
         int quantity = 1;
         String expResult = "Karrékotlett med Ben Skivad ca 1kg ICA";
         sale.addItem(item, quantity);
-        String result = sale.getItems().get(0).getItemDTO().getItemDescription();
+        String result = sale.getSaleInformation().getItems().get(0).getItemDTO().getItemDescription();
+        assertEquals(expResult, result, "Expected result did not equal result");
+    }
+    
+    @Test
+    public void testAddItemTotalPrice() {
+        System.out.println("addItemTotalPrice");
+        ItemDTO itemDTO = new ItemDTO("Karrékotlett med Ben Skivad ca 1kg ICA", 87, 12);
+        Item item = new Item(1, itemDTO, 100);
+        int quantity = 1;
+        double expResult = 99;
+        sale.addItem(item, quantity);
+        double result = sale.getSaleInformation().getTotalPrice();
+        assertEquals(expResult, result, "Expected result did not equal result");
+    }
+    
+    @Test
+    public void testAddItemTotalVAT() {
+        System.out.println("addItemTotalVAT");
+        ItemDTO itemDTO = new ItemDTO("Karrékotlett med Ben Skivad ca 1kg ICA", 87, 12);
+        Item item = new Item(1, itemDTO, 100);
+        int quantity = 1;
+        double expResult = 12;
+        sale.addItem(item, quantity);
+        double result = sale.getSaleInformation().getTotalVAT();
         assertEquals(expResult, result, "Expected result did not equal result");
     }
 
