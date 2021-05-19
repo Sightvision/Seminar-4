@@ -123,7 +123,7 @@ public class Sale {
             items.add(item);
             this.saleInformation = new SaleDTO(this.time, this.totalVAT, this.totalPrice, this.items);
     }
-        
+    
     private void notifyObservers(){
         for(SaleObserver obs : saleObservers){
             obs.newSale(this.totalPrice);

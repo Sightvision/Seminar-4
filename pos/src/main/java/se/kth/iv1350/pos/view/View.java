@@ -30,22 +30,17 @@ public class View {
            
         try{
             SaleDTO saleDTO = contr.enterItem(1, 10);
-            System.out.println("Föremål:      " + saleDTO.getItems().get(0).getItemDTO().getItemDescription() + "    " +  saleDTO.getItems().get(0).getItemDTO().getPrice() + " SEK");
+            System.out.println("Föremål:" + "\t" + saleDTO.getItems().get(0).getItemDTO().getItemDescription() + "\t" +  saleDTO.getItems().get(0).getItemDTO().getPrice() + " SEK");
         } catch(ItemIdentifierNotValidException exception){
             System.err.println("Invalid item identifier!");
         } catch(DataBaseOfflineException exception){
             System.err.println("Database seems to be offline! Please contact support : 0707415041");
         }
-        
-    	//SaleDTO saleDTO = contr.enterItem(10, 10);
-        //System.out.println("Föremål:      " + saleDTO.getItems().get(0).getItemDTO().getItemDescription() + "    " +  saleDTO.getItems().get(0).getItemDTO().getPrice() + " SEK");
-        //System.out.println("Running total:                                          " + saleDTO.getTotalPrice() + " SEK");
-
     	
     	contr.endSale();
         System.out.println("Försäljning avslutad.");
     	double change = contr.pay(100,"Cash");
-        System.out.println("Växel:              " + change + " SEK");
+        System.out.println("Växel:\t\t\t\t\t\t\t" + change + " SEK");
     	contr.print();
     }
 }
